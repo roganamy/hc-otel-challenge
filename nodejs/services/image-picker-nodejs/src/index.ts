@@ -1,6 +1,5 @@
 import "./tracing"
 import express, { Request, Response } from 'express';
-import { trace, context } from '@opentelemetry/api';
 import { BUCKET_NAME } from './config';
 
 // aws s3 ls s3://random-pictures | awk '{print "\"" $NF "\","}'
@@ -72,13 +71,11 @@ app.get("/health", (req: Request, res: Response) => {
 
 app.get('/imageUrl', async (req: Request, res: Response) => {
     const imageUrl = choose(IMAGES);
-    // trace.getActiveSpan()?.setAttributes({ "app.imageUrl": imageUrl, "app.bucketName": BUCKET_NAME }); // INSTRUMENTATION: add relevant info
     res.send({ imageUrl });
 });
 
 function choose<T>(array: T[]): T {
     const i = Math.floor(Math.random() * array.length);
-    // trace.getActiveSpan()?.setAttributes({ "app.choiceIndex": i, "app.numberOfChoices": array.length }); // INSTRUMENTATION: add relevant info
     return array[i];
 }
 
