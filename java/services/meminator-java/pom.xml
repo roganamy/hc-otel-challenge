@@ -31,13 +31,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>		
-		<dependency>
-			<!--INSTRUMENTATION:
-			this is the only dependency you need for your code -->
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api</artifactId>
-			<version>1.38.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -45,11 +38,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<jvmArguments>
-						-javaagent:./opentelemetry-javaagent.jar
-					</jvmArguments>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

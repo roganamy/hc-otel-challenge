@@ -1,25 +1,19 @@
 package io.honeydemo.meminator.meminator.controller;
 
-import java.lang.reflect.Array;
 import java.lang.ProcessBuilder;
 import java.lang.Process;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
 import java.util.UUID;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import javax.imageio.ImageIO;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.trace.Span; // INSTRUMENTATION
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,12 +32,12 @@ public class MeminatorController {
 
         try {
             String phrase = request.getPhrase();
-            URL url = new URL(request.getImageUrl());
+            URI uri = new URI(request.getImageUrl());
             
-            String filename = new File(url.getPath()).getName();
+            String filename = new File(uri.getPath()).getName();
             String fileExtension = getFileExtension(filename);
             // download the image using URL
-            BufferedImage originalImage = ImageIO.read(url);
+            BufferedImage originalImage = ImageIO.read(uri.toURL());
             inputFile = new File("/tmp/" + filename);
             ImageIO.write(originalImage, fileExtension, inputFile);
 
@@ -52,7 +46,6 @@ public class MeminatorController {
             outputFile = new File(outputFilePath);
 
             // run the convert command
-            Span subprocessSpan = GlobalOpenTelemetry.getTracer("pictureController").spanBuilder("convert").startSpan();
             ProcessBuilder pb = new ProcessBuilder(new String[] {
                 "convert", 
                 inputFile.getAbsolutePath(), 
@@ -67,31 +60,9 @@ public class MeminatorController {
                 phrase.toUpperCase(),
                 outputFilePath
             });
-            subprocessSpan.setAttribute("app.subprocess.command", String.join(" ", pb.command()));
             pb.inheritIO();
             Process process = pb.start();
-
-            InputStream stream = process.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            StringBuilder output = new StringBuilder();
-            String line = "";
-            while((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
-            }
-
-            InputStream errStream = process.getErrorStream();
-            BufferedReader errReader = new BufferedReader(new InputStreamReader(errStream));
-            StringBuilder error = new StringBuilder();
-            String errLine = "";
-            while((errLine = errReader.readLine()) != null) {
-                error.append(errLine).append("\n");
-            }
-
-            int exitCode = process.waitFor();
-            subprocessSpan.setAttribute("app.subprocess.returncode", exitCode);
-            subprocessSpan.setAttribute("app.subprocess.stdout", output.toString());
-            subprocessSpan.setAttribute("app.subprocess.stderr", error.toString());
-            subprocessSpan.end();
+            process.waitFor();
 
             // read the output file back into the byte array
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -10,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -20,7 +17,7 @@ public class PictureController {
 
     private final WebClient phraseClient;
     private final WebClient imageClient;
-    private WebClient memeClient;
+    private final WebClient memeClient;
     private static final Logger logger = LogManager.getLogger("backendForFrontend");
 
     @Autowired

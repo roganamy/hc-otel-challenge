@@ -1,19 +1,15 @@
 package io.honeydemo.meminator.phrasepicker.controller;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.opentelemetry.api.trace.Span; // INSTRUMENTATION
 
 @RestController
 public class PhraseController {
 
-    private static List<String> PhraseList = Arrays.asList(
+    private static final List<String> PhraseList = Arrays.asList(
             "you're muted",
             "not dead yet",
             "Let them.",
@@ -40,8 +36,6 @@ public class PhraseController {
     public PhraseResult hello() {
         // choose a random phrase from the list
         String chosenPhrase = PhraseList.get((int) (Math.random() * PhraseList.size()));
-        // INSTRUMENTATION: add a useful attribute
-        Span.current().setAttribute("app.phrase", chosenPhrase);
         return new PhraseResult(chosenPhrase);
     }
 

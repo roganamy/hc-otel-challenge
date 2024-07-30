@@ -4,7 +4,6 @@ FROM maven:3.9.6-eclipse-temurin-21-jammy AS dependencies
 WORKDIR /app
 COPY pom.xml .
 RUN mvn -B dependency:resolve dependency:resolve-plugins
-RUN wget https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.33.2/opentelemetry-javaagent.jar
 
 # Stage 2: Build application
 FROM dependencies AS build
@@ -26,6 +25,5 @@ RUN fc-cache -f -v
 WORKDIR /app
 
 COPY --from=build /app/target/meminator-0.0.1-SNAPSHOT.jar ./meminator.jar
-COPY --from=dependencies /app/opentelemetry-javaagent.jar .
 EXPOSE 10117
-CMD ["java", "-javaagent:./opentelemetry-javaagent.jar", "-jar", "meminator.jar"]
+CMD ["java", "-jar", "meminator.jar"]
