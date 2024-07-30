@@ -1,106 +1,90 @@
 
-# SA Tech Challenge: Sample Meminator App
+# SA Tech Challenge: Meminator App
 
 ***This is a demo app, don't run it in production***
 
-This contains a sample application for use in SA Tech Challenge activities. This app has 4 services.
+This contains a sample application for use in the Honeycomb Solution Architect
+Tech Challenge. The app has 4 services, replicated across 4 languages: Go, Java,
+Node.js, and Python.
 
-It generates images by combining a randomly chosen picture with a randomly chosen phrase.
+It generates memes by combining a randomly chosen safe for work picture with a
+randomly chosen phrase.
 
 ## Introduction
 
-Hello! Welcome to the **Instrumenting Meminator with OTEL** challenge.
+Hello! Welcome to the **Instrumenting Meminator with OpenTelemetry** challenge.
 
-1. Take a look at the meminator app.
-2. Select the language of your choice, and perform adequate OTEL instrumentation to the app.
-3. Then, connect this app to Honeycomb.
-4. See what the traces look like.
-5. Improve the traces.
+1. Use the Meminator app (it's fun).
+2. Select the language of your choice, and instrument the app using
+OpenTelemetry.
+3. Send the instrumentation to Honeycomb.
+4. Use Honeycomb to observe the app instrumentation.
+5. Add additional instrumentation to improve the observability of the app.
 
-## Running the application
+## Setup your development environment
 
-To run this app, you can use GitPod or Codespaces.
-
-Once you run the application, you can send traces to Honeycomb. Then you can practice improving the instrumentation for better observability.
+To run this app, you can use GitHub Codespaces, GitPod, or your local
+environment. It is recommended to use GitHub Codespaces, but you are free to
+choose the environment you are most comfortable with.
 
 ### GitHub Codespaces setup
 
-Open the repository on GitHub. Open the `<> Code` dropdown down menu.
-
-Select the `Codespaces` tab. Create a codespace on main.
+1. From this repository in GitHub, click the `<> Code` button/dropdown down menu
+2. Select the `Codespaces` tab
+3. Click the plus symbol (+) button to Create a codespace on main
 
 ### GitPod setup
 
-Go to [Gitpod](https://gitpod.io/#https://github.com/honeycombio/sa-tech-challenge) to open the repository.
-
-Confirm the workspace creation. You can work in the browser with VS Code Browser or in your local code editor. The default settings are acceptable. 
-
-Once you are in the code editor, run `docker compose up` in the code editor's terminal. To stop running the application, run `ctrl+c`. Then run `docker compose down` to remove the container.
+1. Go to
+[Gitpod](https://gitpod.io/#https://github.com/honeycombio/sa-tech-challenge) to
+open the repository in GitPod
+2. You may need to create a GitPod account or sign in with your GitHub account
 
 ### Local development setup
 
-You also have the option to run this application locally.
-
-First, clone this repository.
+Running this repository locally may require your development environment to be
+setup with proper SDKs in order to edit and test the code. You can clone the
+repository to your local machine by running the following command:
 
 ```bash
 git clone https://github.com/honeycombio/sa-tech-challenge.git
 ```
+## Run the application
 
-Install Docker: https://docs.docker.com/get-docker/
+### Choose the language of your choice
 
-### Choose the language of choice
-
-Select and enter into the memintor of your choice written in the following languages:
-- java
-- nodejs
-- python
-- go
-
-cd into the folder. For example, if you chose java,
-```bash
-cd java
-```
-
-Update the `.env` file with your Honeycomb API key:
-```bash
-HONEYCOMB_API_KEY="your-api-key"
-
-# you could change this to your own S3 bucket of images. We accept no responsibility for the outcome.
-# Note: "random-pictures" is an actual S3 bucket name supplied for this course, filled with SFW meme images
-BUCKET_NAME="random-pictures"
-
-OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io:443/"
-OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
-```
-
-If you don't have an API key handy, here is the [documentation](https://docs.honeycomb.io/get-started/configure/environments/manage-api-keys/#create-api-key).
-
+The app is writen in 4 languages: Go, Java, Node.js, and Python. Choose the
+language you are most comfortable with. Go to the directory of the language you
+want to work with to start and stop the app.
 
 ### Run the app
 
-`./run`
+To run the app, run the following command:
 
-(This will run `docker compose` in daemon mode, and build containers.)
+```bash
+./run
+```
 
-Access the app:
+This will run `docker compose` in daemon mode, to build and start all
+application services.
 
-[http://localhost:10114]()
+### Access the app
 
-After making changes to a service, you can tell it to rebuild just that one:
+If running locally, the app will be available at [http://localhost:10114]()
+GitHub Codespaces and GitPod will will be available at the URL provided in the
+terminal. You can also go to the Ports tab inside GitHub Codespaces or GitPod
+to access the app which will be running on port 10114.
 
-`./run [ meminator | backend-for-frontend | image-picker | phrase-picker ]`
+### Making changes
 
-### Try it out
+After making changes to a service, you can rebuild just that service by running:
 
-Visit [http://localhost:10114]()
-
-> If you are using **GitPod**, the address may not be localhost. When running, the VSC environment will ask you if you want to expose the ports to public. Select Yes, and you will see the external address and port 10114, to which you can then click the globe icon to show it on a new tab.
-
-Click the "GO" button. Then wait.
-
-> **NOTE** ⚠️ If you run the application for the first time, the result image may not load up properly. In that case, reload the page, and try again a few times.
+```bash
+./run [ backend-for-frontend | image-picker | meminator | phrase-picker ]
+```
 
 ### Stop the app
 
-`./stop`
+```bash
+./stop
+```
