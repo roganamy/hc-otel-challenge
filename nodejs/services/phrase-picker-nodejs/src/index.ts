@@ -1,4 +1,3 @@
-import "./tracing"
 import express, { Request, Response } from 'express';
 
 const PHRASES = [

@@ -6,10 +6,6 @@ services:
     image: backend-for-frontend-nodejs:latest
     ports:
       - "10115"
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT
-      - OTEL_EXPORTER_OTLP_HEADERS
-      - OTEL_SERVICE_NAME=backend-for-frontend
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:10115/health || exit 1"]
       interval: 5s
@@ -24,10 +20,7 @@ services:
     ports:
       - "10116" 
     environment:
-      - BUCKET_NAME
-      - OTEL_EXPORTER_OTLP_ENDPOINT
-      - OTEL_EXPORTER_OTLP_HEADERS
-      - OTEL_SERVICE_NAME=image-picker-nodejs
+      BUCKET_NAME: random-pictures
 
   meminator:
     build:
@@ -36,10 +29,6 @@ services:
     image: meminator-nodejs:latest
     ports:
       - "10117" 
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT
-      - OTEL_EXPORTER_OTLP_HEADERS
-      - OTEL_SERVICE_NAME=meminator-nodejs
 
   phrase-picker:
     build:
@@ -47,18 +36,12 @@ services:
       dockerfile: Dockerfile
     image: phrase-picker-nodejs:latest
     ports:
-      - "10118" 
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT
-      - OTEL_EXPORTER_OTLP_HEADERS
-      - OTEL_SERVICE_NAME=phrase-picker-nodejs
+      - "10118"
 
   web:
     build:
       context: services/web
       dockerfile: Dockerfile
-      args:
-        HONEYCOMB_API_KEY: ${HONEYCOMB_API_KEY}
     image: web:latest
     # volumes: # uncomment this for faster development on the frontend
     #   - ./services/web/dist:/usr/share/nginx/html # Mount directory containing static files -- only do this for development
