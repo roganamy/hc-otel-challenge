@@ -31,7 +31,7 @@ choose the environment you are most comfortable with.
 
 1. From this repository in GitHub, click the `<> Code` button/dropdown down menu
 2. Select the `Codespaces` tab
-3. Click the plus symbol (+) button to Create a codespace on main
+3. Click the `Create codespace on main` button
 
 ### GitPod setup
 
