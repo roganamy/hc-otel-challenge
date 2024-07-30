@@ -7,7 +7,7 @@ This contains a sample application for use in the Honeycomb Solution Architect
 Tech Challenge. The app has 4 services, replicated across 4 languages: Go, Java,
 Node.js, and Python.
 
-It generates memes by combining a randomly chosen safe for work picture with a
+It generates memes by combining a randomly chosen safe for work image with a
 randomly chosen phrase.
 
 ## Introduction
@@ -55,7 +55,12 @@ git clone https://github.com/honeycombio/sa-tech-challenge.git
 
 The app is writen in 4 languages: Go, Java, Node.js, and Python. Choose the
 language you are most comfortable with. Go to the directory of the language you
-want to work with to start and stop the app.
+want to work with to start and stop the app. For example to use Java, run the
+following command:
+
+```bash
+cd java
+```
 
 ### Run the app
 
@@ -65,15 +70,16 @@ To run the app, run the following command:
 ./run
 ```
 
-This will run `docker compose` in daemon mode, to build and start all
-application services.
+This will run `docker compose` in daemon mode, to build and start all app
+services. It may take several minutes for the app to build and start the first
+time.
 
 ### Access the app
 
 If running locally, the app will be available at [http://localhost:10114]()
 GitHub Codespaces and GitPod will will be available at the URL provided in the
-terminal. You can also go to the Ports tab inside GitHub Codespaces or GitPod
-to access the app which will be running on port 10114.
+terminal by the run script. You can also go to the Ports tab inside GitHub
+Codespaces or GitPod to access the app which will be running on port 10114.
 
 ### Making changes
 
