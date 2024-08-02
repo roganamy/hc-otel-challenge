@@ -10,6 +10,9 @@ COPY requirements.txt .
 # Install Flask and other dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install OpenTelemetry packages
+RUN pip install opentelemetry-api opentelemetry-sdk opentelemetry-instrumentation-flask opentelemetry-exporter-otlp opentelemetry-instrumentation-requests
+
 # Copy the rest of the application code to the working directory
 COPY . .
 
@@ -19,4 +22,4 @@ EXPOSE 10115
 ENV FLASK_APP=server.py
 
 # Command to run the Flask application
-CMD ["flask", "run", "-p 10115", "--host=0.0.0.0"]
+CMD ["flask", "run", "-p", "10115", "--host=0.0.0.0"]
